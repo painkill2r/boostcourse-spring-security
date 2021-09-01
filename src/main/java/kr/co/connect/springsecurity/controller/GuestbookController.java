@@ -5,10 +5,7 @@ import kr.co.connect.springsecurity.service.GuestbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,41 +20,22 @@ public class GuestbookController {
     private GuestbookService guestbookService;
 
     /**
-     * @param request  쿠키를 사용하기 위해 request 객체 사용
-     * @param response 쿠키를 사용하기 위해 response 객체 사용
+     * @param response 쿠키를 사용하기 위한 response 객체
+     * @param value    Spring이 제공하는 @CookieValue를 사용
      * @param start
      * @param model
      * @return
      */
     @GetMapping("/list")
-    public String list(HttpServletRequest request,
-                       HttpServletResponse response,
+    public String list(HttpServletResponse response,
+                       @CookieValue(value = "count", defaultValue = "0", required = true) String value,
                        @RequestParam(name = "start", required = false, defaultValue = "0") int start,
                        Model model) {
-
-        String value = null;
-        boolean find = false;
-
-        Cookie[] cookies = request.getCookies(); //클라이언트로 부터 쿠키 배열을 가져옴.
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("count".equals(cookie.getName())) { //"count"라는 이름과 동일한 쿠키인 경우
-                    find = true;
-                    value = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
-        if (!find) {
-            value = "1"; //쿠키는 String 타입의 값을 가질 수 있다.
-        } else {
-            try {
-                int i = Integer.parseInt(value);
-                value = Integer.toString(++i);
-            } catch (Exception e) {
-                value = "1";
-            }
+        try {
+            int i = Integer.parseInt(value);
+            value = Integer.toString(++i);
+        } catch (Exception e) {
+            value = "1";
         }
 
         Cookie cookie = new Cookie("count", value);
