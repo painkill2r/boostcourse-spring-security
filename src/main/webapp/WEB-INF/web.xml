@@ -14,7 +14,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <!-- ContextLoaderListener가 읽어들일 설정 파일 -->
-        <param-value>kr.or.connect.springmvc.ApplicationConfig</param-value>
+        <param-value>kr.co.connect.springsecurity.ApplicationConfig</param-value>
     </context-param>
     <!-- listener: 특정한 이벤트가 일어났을때 동작 -->
     <listener>
@@ -34,7 +34,7 @@
         <!-- DispatcherServlet이 실행될 때 WebMvcContextConfiguration 설정 파일을 읽어 들여서 처리하도록 설정 -->
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>kr.or.connect.springmvc.WebMvcContextConfiguration</param-value>
+            <param-value>kr.co.connect.springsecurity.WebMvcContextConfiguration</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
