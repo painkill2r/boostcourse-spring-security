@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>방명록</h1>
-<br> 방명록 전체 수 : ${count}
+<br> 방명록 전체 수 : ${count}, 방문한 수: ${visitCount}
 <br>
 <br>
 <c:forEach items="${list}" var="guestbook">
