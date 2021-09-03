@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +77,23 @@ public class GuestbookController {
         System.out.println("clientIp : " + clientIp);
 
         guestbookService.addGuestbook(guestbook, clientIp);
+
+        return "redirect:/list";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam(name = "id", required = true) Long id,
+                         @SessionAttribute(value = "isAdmin", required = false) String isAdmin,
+                         HttpServletRequest request,
+                         RedirectAttributes redirectAttributes) {
+        if (isAdmin == null || !"true".equals(isAdmin)) {
+            redirectAttributes.addFlashAttribute("message", "로그인을 하지 않았습니다.");
+            return "redirect:/login";
+        }
+
+        String clientIp = request.getRemoteAddr();
+
+        guestbookService.deleteGuestbook(id, clientIp);
 
         return "redirect:/list";
     }
